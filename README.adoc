@@ -1,0 +1,99 @@
+# YARN-SUBMIT on CDP
+
+This is a little Java program able to launch any kind of applications (Java, Python, Shell) on YARN cluster on CDP (7.1.1 actually).
+
+A shell script (yarn-submit.sh) is used to launch a YARN Application Master that will handle all containers for you
+and launch in them commands passed in arguments.
+
+If you want to see an integration with a Kafka Streams application, use the one provided by this link:https://github.com/frischHWC/kafka-streams-cdp[Kafka streams project].
+
+# TODOs
+
+- Implement an AM-RM/NM asynchronous client
+- Handle renewal of keytab/token by AM and propagate it to containers
+
+
+# How to compile it ?
+
+First, change in pom.xml, the cdp.version properties to your version of CDP
+
+Then clean, compile, package the application using Maven with:
+
+[source,bash]
+mvn clean package
+
+
+# How to launch it ?
+
+1. Copy the produced jar (after packaging) to your cluster: target/yarn-submit-XXXX.jar +
+1. Copy the parameter.properties well populated (or not, as you wan use command-line parameters) to your cluster (along the yarn-submit.jar) +
+1. Copy the yarn-submit.sh script to your cluster +
+1. Launch the application either with java: +
+
+[source,bash]
+java -jar yarn-submit.jar parameters.properties
+
+or either with script shell: +
+
+[source,bash]
+yarn-submit.sh <ARGS>
+
+Note that all above step, could be done in once thanks to link:src/main/resources/launchToPlatform.sh[src/main/resources/launchToPlatform.sh] script.
+
+
+Progress could be either seen in the console or with following yarn command:
+
+[source,bash]
+yarn logs -applicationId <applicationId>
+
+## yarn-submit.sh
+
+To launch easily some containers with one unique commands on each or different commands (possibly: shell, java, python), use link:src/main/resources/yarn-submit.sh[yarn-submit.sh] like this:
+
+First possibility is to give a jar file and arguments belonging to the launch of that jar.
+Yarn-Submit will then automatically setup as many containers as required and launch that jar file on all required containers:
+
+[source,bash]
+    ./yarn-submit.sh \
+    --app-name=random \
+    --container-memory=2048 \
+    --container-number=2 \
+    --kerberos-user=dev@FRISCH.COM \
+    --keytab=/home/dev/dev.keytab \
+    --app-files=/home/root/random-datagen/model.json,/home/root/random-datagen/config.properties,/home/root/random-datagen/log4j.properties,/home/root/random-datagen/random-datagen.jar \
+    /home/root/random-datagen/random-datagen.jar model.json 10 1 hbase
+
+In this previous case, jar random-datagen.jar will be launched with parameters " model.json 10 1 hbase". Exactly 2 instances will be launched,
+each with 2GB of RAM and 1 VCores as it is the value by default.
+
+Second possibility is to give a link to a file that will contain different commands to launch, each command will be launched in a different container.
+
+[source,bash]
+    ./yarn-submit.sh \
+    --app-name=some_commands \
+    --container-memory=1024 \
+    --kerberos-user=dev@FRISCH.COM \
+    --keytab=/home/dev/dev.keytab \
+    --app-files=/home/root/random-datagen/model.json,/home/root/random-datagen/config.properties,/home/root/random-datagen/log4j.properties,/home/root/random-datagen/random-datagen.jar \
+    commandsToLaunch
+
+commandsToLaunch content:
+[source,bash]
+java -jar random-datagen.jar model.json 10 1 hbase
+python --version
+hdfs dfs -ls /
+
+In this latter case, three containers will spin up, each with a different command (one java jar launching, one python command and a shell one).
+
+
+To get more details on options available, you can check help of yarn-submit:
+
+[source,bash]
+yarn-submit --help
+
+
+# Reading external files within the application
+
+In case, application launched on YARN requires some external files, two steps are required: +
+- Access these files inside the application directly by their name (with no path)
+- Add these list of files in the parameter: ``app.files`` from parameter.properties file.

@@ -1,0 +1,12 @@
+java -jar random-datagen.jar model.json 10 100 hbase
+java -jar random-datagen.jar model.json 10 100 ozone
+java -jar random-datagen.jar model.json 10 100 hdfs-parquet
+java -jar random-datagen.jar model.json 10 100 hdfs-orc
+java -jar random-datagen.jar model.json 10 100 hdfs-avro
+java -jar random-datagen.jar model.json 10 100 hdfs-csv
+java -jar random-datagen.jar model.json 10 100 kafka
+java -jar random-datagen.jar model.json 10 100 solr
+java -jar random-datagen.jar model.json 10 100 kudu
+java -jar random-datagen.jar model.json 10 100 hive
+python --version
+hdfs dfs -ls /
