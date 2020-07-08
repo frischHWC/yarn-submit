@@ -7,11 +7,6 @@ and launch in them commands passed in arguments.
 
 If you want to see an integration with a Kafka Streams application, use the one provided by this link:https://github.com/frischHWC/kafka-streams-cdp[Kafka streams project].
 
-# TODOs
-
-- Implement an AM-RM/NM asynchronous client
-- Handle renewal of keytab/token by AM and propagate it to containers
-
 
 # How to compile it ?
 
@@ -95,5 +90,11 @@ yarn-submit --help
 # Reading external files within the application
 
 In case, application launched on YARN requires some external files, two steps are required: +
-- Access these files inside the application directly by their name (with no path)
+- Access these files inside the application directly by their name (with no path) +
 - Add these list of files in the parameter: ``app.files`` from parameter.properties file.
+
+
+# TODOs
+
+- Implement an AM-RM/NM asynchronous client
+- Handle renewal of keytab/token by AM and propagate it to containers
