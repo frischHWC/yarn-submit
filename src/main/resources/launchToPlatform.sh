@@ -20,7 +20,7 @@ ssh ${USER}@${MACHINE} "cd ${DIR} ;
 ./yarn-submit.sh \
     --app-name=random-datagen \
     --container-memory=4096 \
-    --kerberos-user=dev@FRISCH.COM \
+    --kerberos-user=dev@DEV.FRISCH.COM \
     --keytab=/home/dev/dev.keytab \
     --app-files=/home/root/random-datagen/config.properties,/home/root/random-datagen/log4j2.properties,/home/root/random-datagen/model.json,/home/root/random-datagen/random-datagen.jar \
     /home/root/yarn-submit/commandsToLaunch"

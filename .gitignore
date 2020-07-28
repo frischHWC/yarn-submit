@@ -5,3 +5,4 @@ launch.sh
 .idea/
 target/*
 target/
+src/main/resources/launch.sh
