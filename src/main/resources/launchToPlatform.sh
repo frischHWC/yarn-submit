@@ -4,7 +4,7 @@
 # export HOST=
 
 export USER=root
-export DIR=/home/root/yarn-submit
+export DIR=/root/yarn-submit
 
 # Send yarn-submit.jar & Config file & yarn-submit.sh
 ssh ${USER}@${HOST} "rm -rf ${DIR}/"
@@ -22,8 +22,8 @@ ssh ${USER}@${HOST} "cd ${DIR} ;
     --container-memory=4096 \
     --kerberos-user=dev@FRISCH.COM \
     --keytab=/home/dev/dev.keytab \
-    --app-files=/home/root/random-datagen/config.properties,/home/root/random-datagen/log4j2.properties,/home/root/random-datagen/model.json,/home/root/random-datagen/random-datagen.jar \
-    /home/root/yarn-submit/commandsToLaunch"
+    --app-files=/root/random-datagen/config.properties,/root/random-datagen/log4j2.properties,/root/random-datagen/log4j.properties,/root/random-datagen/employee.json,/root/random-datagen/random-datagen.jar \
+    /root/yarn-submit/commandsToLaunch"
 
 #
 #./yarn-submit.sh \
