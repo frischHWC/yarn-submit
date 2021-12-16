@@ -18,6 +18,7 @@ CORE_SITE="/etc/hadoop/conf.cloudera.yarn/core-site.xml"
 HADOOP_USERNAME="$USER"
 HADOOP_HOME="/user/$USER"
 CHECK_STATUS_INTERVAL="1000"
+JAVA_HOME="/usr/bin/java"
 
 
 function usage()
@@ -47,6 +48,7 @@ function usage()
     echo "  --core-site=$CORE_SITE : (Optional) path to the core-site on each machine of the cluster (Default) /etc/hadoop/conf.cloudera.yarn/core-site.xml"
     echo "  --hadoop-username=$HADOOP_USERNAME : (Optional) hadoop username (Default) "
     echo "  --hadoop-home=$HADOOP_HOME : (Optional) hadoop home of the user (Default) "
+    echo "  --java-home=$JAVA_HOME : (Optional) Path to Java, to use a non default one (Default) /usr/bin/java "
     echo "  --check-status-interval=$CHECK_STATUS_INTERVAL: (Optional) Time in ms between each check of application status from the client to the AM (Default) 1000"
     echo "<JarPath> <Args> OR <filePath>"
     echo ""
@@ -155,6 +157,10 @@ while [ "$1" != "" ]; do
             CHECK_STATUS_INTERVAL=$VALUE
             echo "app.check-status-interval=$VALUE" >> ${PARAMETERS_FILE}
             ;;
+        --java-home)
+            JAVA_HOME=$VALUE
+            echo "java.home=$VALUE" >> ${PARAMETERS_FILE}
+            ;;
         *)
             ;;
     esac
@@ -173,7 +179,7 @@ cat $PARAMETERS_FILE
 
 echo "Launch of java command for yarn-submit.jar"
 
-java -jar yarn-submit.jar -c $PARAMETERS_FILE
+$JAVA_HOME --add-opens java.base/jdk.internal.ref=ALL-UNNAMED -jar yarn-submit.jar -c $PARAMETERS_FILE
 
 echo "Finished application using yarn-submit.sh"
 

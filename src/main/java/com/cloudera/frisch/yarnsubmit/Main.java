@@ -61,7 +61,7 @@ public class Main {
 
         logger.info("Set up container context");
         ContainerLaunchContext containerLaunchContext = yarnApplicationService.createContainerContext(listOfRequiredHdfsFiles,
-                "java -cp yarn-submit.jar com.cloudera.frisch.yarnsubmit.master.JavaMaster ",
+                Parameters.JAVA_HOME + " -cp yarn-submit.jar com.cloudera.frisch.yarnsubmit.master.JavaMaster ",
                 hdfsService.getFileSystem());
 
         logger.info("Create Submit application context");

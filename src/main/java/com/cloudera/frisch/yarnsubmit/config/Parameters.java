@@ -45,6 +45,7 @@ public class Parameters {
 
         HDFS_WORK_DIRECTORY = getProperty(properties,"hdfs.work.directory", "/tmp/yarnsubmit/" + APP_NAME + "/");
 
+        JAVA_HOME = getProperty(properties,"java.home", "/usr/bin/java");
         JAR_PATH = getProperty(properties,"jar.path", "");
         JAR_ARGUMENTS = getProperty(properties,"jar.arguments", "");
 
@@ -73,6 +74,7 @@ public class Parameters {
     public static Long APP_CHECK_STATUS_INTERVAL;
     public static Long APP_CHECK_CONTAINERS_COMPLETED ;
 
+    public static String JAVA_HOME;
     public static String JAR_PATH;
     public static String JAR_ARGUMENTS;
 
