@@ -6,3 +6,8 @@ launch.sh
 target/*
 target/
 src/main/resources/overallLaunch.sh
+
+.factorypath
+.classpath
+.settings
+.project
